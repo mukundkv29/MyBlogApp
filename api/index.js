@@ -29,13 +29,11 @@ app.post('/register',async (req,res)=>{
     }
 });
 
-
-
-// app.post('/login',async (req,res)=>{
-//     const {username,password}=req.body;
-//     const userDoc=await User.find({username});
-//     res.json(userDoc);
-// })
+app.post('/login', async (req,res)=>{
+    const {username,password} = req.body;
+    const UserDoc = await User.findOne({username});
+    res.json(UserDoc);
+})
 
 
 app.listen(4000);

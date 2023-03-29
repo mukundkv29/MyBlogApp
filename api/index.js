@@ -4,6 +4,7 @@ const { default: mongoose } = require('mongoose');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const cookieParse = require('cookie-parser');
 
 const User = require('./models/User');
 
@@ -13,12 +14,15 @@ const app = expresss();
 const salt = bcrypt.genSaltSync(10);
 const secret = 'In8nfaH7hWW44f5g7944nlfksa';
 
+
 dotenv.config();
 
 
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(expresss.json());
+app.use(cookieParse());
 
+ 
 mongoose.connect(process.env.MONGO_URL);
 
 
@@ -53,6 +57,16 @@ app.post('/login', async (req, res) => {
         }
     }
 });
+
+
+app.get('/profile',(req,res)=>{
+    const {token} = req.cookies;
+    jwt.verify(token,secret,{},(err,info)=>{
+        if(err) throw err;
+        res.json(info);
+    });
+    
+})
 
 
 app.listen(4000);

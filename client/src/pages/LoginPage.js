@@ -46,7 +46,7 @@ export default function LoginPage() {
                 onChange={ev=>setPassword(ev.target.value)}
             />
             <button>Login</button>
-        </form>
+        </form> 
     );
 
 }

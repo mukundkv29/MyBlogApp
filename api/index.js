@@ -2,8 +2,8 @@ const expresss = require('express');
 const cors = require('cors');
 const { default: mongoose } = require('mongoose');
 const dotenv = require('dotenv');
-const bcrypt=require('bcryptjs');
-const jwt=require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const User = require('./models/User');
 
@@ -16,35 +16,41 @@ const secret = 'In8nfaH7hWW44f5g7944nlfksa';
 dotenv.config();
 
 
-app.use(cors({credentials:true,origin:'http://localhost:3000'}));
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(expresss.json());
 
 mongoose.connect(process.env.MONGO_URL);
 
 
-app.post('/register',async (req,res)=>{
-    const {username,password} = req.body;
-    try{const UserDoc=await User.create({
-        username,
-        password:bcrypt.hashSync(password,salt)
-    });
-    res.json(UserDoc);}catch(E){
+app.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+    try {
+        const UserDoc = await User.create({
+            username,
+            password: bcrypt.hashSync(password, salt)
+        });
+        res.json(UserDoc);
+    } catch (E) {
         res.status(400).json(E);
     }
 });
 
-app.post('/login', async (req,res)=>{
-    const {username,password} = req.body;
-    const UserDoc = await User.findOne({username});
-    const isValidUser = bcrypt.compareSync(password,UserDoc.password);
-    if(isValidUser){
-        //logged in 
-        jwt.sign({username,id:UserDoc._id},secret,{},(err,token)=>{
-            if(err) throw err;
-            res.cookie('token',token).json('okay');
-        });
-    }else{
-        res.status(400).json('invalid user credentials');
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    const UserDoc = await User.findOne({ username });
+    if (!UserDoc) {
+        res.status(400).json('Invalid Username....');
+    } else {
+        const isValidUser = bcrypt.compareSync(password, UserDoc.password);
+        if (isValidUser) {
+            //logged in 
+            jwt.sign({ username, id: UserDoc._id }, secret, {}, (err, token) => {
+                if (err) throw err;
+                res.cookie('token', token).json('Successful Login...');
+            });
+        } else {
+            res.status(400).json('invalid user Password...');
+        }
     }
 });
 

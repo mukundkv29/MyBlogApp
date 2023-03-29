@@ -1,17 +1,23 @@
 import React, { useState } from "react";
+// import { Navigate } from "react-router-dom";
 
 export default function LoginPage() {
     const [username,setUsername]=useState('');
     const [password,setPassword]=useState('');
+    // const [redirect,setRedirect]=useState('');
 
     async function login(ev){
         ev.preventDefault();
         await fetch('http://localhost:4000/login',{
             method:'POST',
             body: JSON.stringify({username,password}),
-            headers:{'Content-Type':'application/json'}
+            headers:{'Content-Type':'application/json'},
+            credentials: 'include',
         })
+        
     }
+
+    
 
     return (
         // <div>LoginPage...</div>

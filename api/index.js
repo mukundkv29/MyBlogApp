@@ -69,6 +69,11 @@ app.get('/profile',(req,res)=>{
 })
 
 
+app.post('/logout',(req,res)=>{
+    res.cookie('token','').json('ok');
+})
+
+
 app.listen(4000);
 
 // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhcnVuIiwiaWQiOiI2NDIxNzkwYTBmN2JkMTg3N2Q1Yjg4ZTEiLCJpYXQiOjE2Nzk5MzQzMTB9.VSc_QVO6VTv6Tj_ZXaL287uML4NSP4PqTqu3-mmck_Q"

@@ -50,7 +50,11 @@ app.post('/login', async (req, res) => {
             //logged in 
             jwt.sign({ username, id: UserDoc._id }, secret, {}, (err, token) => {
                 if (err) throw err;
-                res.cookie('token', token).json('Successful Login...');
+                // res.cookie('token', token).json('Successful Login...');
+                res.cookie('token', token).json({
+                    id:UserDoc._id,
+                    username,
+                });
             });
         } else {
             res.status(400).json('invalid user Password...');

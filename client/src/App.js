@@ -9,18 +9,22 @@ import RegisterPage from "./pages/RegisterPage.js";
 
 import "./App.css";
 import Layout from "./Layout.js";
+import { UserContextProvider } from "./UserContext.js";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<IndexPage />} />
-        <Route path="/login" element={<LoginPage/>} />
-        <Route path="/register" element={<RegisterPage/>} />
-      </Route>
+    <UserContextProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<IndexPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
 
-      
-    </Routes>
+
+      </Routes>
+    </UserContextProvider>
+
   );
 }
 

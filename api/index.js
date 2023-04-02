@@ -5,11 +5,12 @@ const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieParse = require('cookie-parser');
-const multer=require('multer');
+const multer = require('multer');
+const fs = require('fs');
+const Post = require('./models/post');
 
 
-
-const uploadMiddleWare=multer({dest:'uploads/'});
+const uploadMiddleWare = multer({ dest: 'uploads/' });
 
 const User = require('./models/User');
 
@@ -27,7 +28,7 @@ app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(expresss.json());
 app.use(cookieParse());
 
- 
+
 mongoose.connect(process.env.MONGO_URL);
 
 
@@ -57,7 +58,7 @@ app.post('/login', async (req, res) => {
                 if (err) throw err;
                 // res.cookie('token', token).json('Successful Login...');
                 res.cookie('token', token).json({
-                    id:UserDoc._id,
+                    id: UserDoc._id,
                     username,
                 });
             });
@@ -68,23 +69,43 @@ app.post('/login', async (req, res) => {
 });
 
 
-app.get('/profile',(req,res)=>{
-    const {token} = req.cookies;
-    jwt.verify(token,secret,{},(err,info)=>{
-        if(err) throw err;
+app.get('/profile', (req, res) => {
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, (err, info) => {
+        if (err) throw err;
         res.json(info);
     });
+
+})
+
+
+app.post('/logout', (req, res) => {
+    res.cookie('token', '').json('ok');
+})
+
+
+app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
+
+
+    const { originalname,path} = req.file;
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path+'.'+ext;
+    fs.renameSync(path,newPath); 
     
-})
+    const {title,summary,content} = req.body;
+
+    // res.json({title,summary,content});
 
 
-app.post('/logout',(req,res)=>{
-    res.cookie('token','').json('ok');
-})
 
+    const PostDoc = await Post.create({
+        title,summary,content,
+        cover:newPath,
+    });
+    res.json(PostDoc);
 
-app.post('/post', uploadMiddleWare.single('file'),(req,res)=>{
-    res.json({files:req.file});
+    
 })
 
 

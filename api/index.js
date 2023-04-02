@@ -5,6 +5,11 @@ const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookieParse = require('cookie-parser');
+const multer=require('multer');
+
+
+
+const uploadMiddleWare=multer({dest:'uploads/'});
 
 const User = require('./models/User');
 
@@ -75,6 +80,11 @@ app.get('/profile',(req,res)=>{
 
 app.post('/logout',(req,res)=>{
     res.cookie('token','').json('ok');
+})
+
+
+app.post('/post', uploadMiddleWare.single('file'),(req,res)=>{
+    res.json({files:req.file});
 })
 
 

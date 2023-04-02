@@ -42,15 +42,16 @@ export default function CreatePost() {
     data.set("title", title);
     data.set("summary", summary);
     data.set("content", content);
-    data.set("file", files);
+    data.set("file", files[0]);
 
     ev.preventDefault();
     console.log(files);
-    // await fetch("http://localhost:4000/post", {
-    //   method: "POST",
-    //   body: data,
-    //   credentials: "include",
-    // });
+    const response=await fetch("http://localhost:4000/post", {
+      method: "POST",
+      body: data,
+      // credentials: "include",
+    });
+    console.log(response.json);
   }
 
   return (

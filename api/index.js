@@ -109,6 +109,13 @@ app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
 })
 
 
+
+app.get('/post' , async (req,res)=>{
+    const posts =await Post.find();
+    res.json(posts);
+});
+
+
 app.listen(4000);
 
 // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhcnVuIiwiaWQiOiI2NDIxNzkwYTBmN2JkMTg3N2Q1Yjg4ZTEiLCJpYXQiOjE2Nzk5MzQzMTB9.VSc_QVO6VTv6Tj_ZXaL287uML4NSP4PqTqu3-mmck_Q"

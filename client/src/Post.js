@@ -1,7 +1,6 @@
-import React from "react";
-// import './App.css';
+import { format } from "date-fns";
 
-const Post = () =>{
+export default function Post({title,summary,cover,content,createdAt,author}){
     return (
         <div className='post'>
         <div className='image'>
@@ -10,17 +9,18 @@ const Post = () =>{
         </div>
 
         <div className='texts'>
-          <h2>Designing Zenly: Part I</h2>
+          <h2>{title}</h2>
           <p className='info'>
-            <a className='author'>Julien Martin</a>
-            <time>2023-03-21 16:45</time>
+            {/* author?.username is used when we aren't sure that user property exits or not */}
+            <a className='author'>{author?.username}</a>
+            <time>{format(new Date(createdAt),'MMM do, yyy HH:mm')}</time>
           </p>
           <p className='summary'>
-            I've been wanting to do this for a while. As Zenly came to an end in February 2023, I started writing these articles in September 2022 following the shutdown announcement. It’s my own way to “grieve”, my own way to close the loop and move on.
+            {summary}
           </p>
         </div>
       </div>
     );
 }
 
-export default Post;
+// export default Post;

@@ -1,4 +1,4 @@
-const expresss = require('express');
+const express = require('express');
 const cors = require('cors');
 const { default: mongoose } = require('mongoose');
 const dotenv = require('dotenv');
@@ -14,7 +14,7 @@ const uploadMiddleWare = multer({ dest: 'uploads/' });
 
 const User = require('./models/User');
 
-const app = expresss();
+const app = express();
 
 
 const salt = bcrypt.genSaltSync(10);
@@ -25,8 +25,9 @@ dotenv.config();
 
 
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
-app.use(expresss.json());
+app.use(express.json());
 app.use(cookieParse());
+app.use('/uploads',express.static(__dirname+'/uploads'));
 
 
 mongoose.connect(process.env.MONGO_URL);
@@ -108,7 +109,7 @@ app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
     });
     
 
-    
+     
 })
 
 
@@ -116,7 +117,11 @@ app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
 app.get('/post' , async (req,res)=>{
     // const posts =await Post.find();
     // res.json(posts.populate('author'));
-    res.json(await Post.find().populate('author',['username']));
+    res.json(await Post.find()
+        .populate('author',['username'])
+        .sort({createdAt:-1})
+        .limit(15)
+    );
 });
 
 

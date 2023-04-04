@@ -5,7 +5,7 @@ export default function Post({title,summary,cover,content,createdAt,author}){
         <div className='post'>
         <div className='image'>
 
-          <img src='https://miro.medium.com/v2/resize:fit:1100/format:webp/1*Yc_SRz7rNTVMGU2R3VKmYw.png' alt='blog_image'></img>
+          <img src={'http://localhost:4000/'+cover} alt='blog_image'></img>
         </div>
 
         <div className='texts'>
@@ -24,3 +24,5 @@ export default function Post({title,summary,cover,content,createdAt,author}){
 }
 
 // export default Post;
+
+// https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.peakpx.com%2Fen%2Fsearch%3Fq%3Dfootball&psig=AOvVaw02rHZrSJ4Eabb1GIJL59_k&ust=1680634304751000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCJj1iZ2zjv4CFQAAAAAdAAAAABAD

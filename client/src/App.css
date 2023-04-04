@@ -116,3 +116,20 @@ form.login h1, form.register.h1{
   text-align: center;
 }
 
+div.post-page div.image{
+  display: flex;
+  max-height: 200px;
+  overflow: hidden;
+}
+div.post-page div.image img{
+  object-position: center center;
+  object-fit: cover;
+}
+div.post-page a{
+  color: #333;
+  text-decoration: underline;
+}
+
+div.post-page h1{
+  text-align: center;
+}

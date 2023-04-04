@@ -125,6 +125,15 @@ app.get('/post' , async (req,res)=>{
 });
 
 
-app.listen(4000);
 
-// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZhcnVuIiwiaWQiOiI2NDIxNzkwYTBmN2JkMTg3N2Q1Yjg4ZTEiLCJpYXQiOjE2Nzk5MzQzMTB9.VSc_QVO6VTv6Tj_ZXaL287uML4NSP4PqTqu3-mmck_Q"
+app.get('/post/:id',async (req,res)=>{
+    // res.json(req);->error
+
+    const {id} = req.params;
+    const PostDoc=await Post.findById(id).populate('author',['username']);
+    res.json(PostDoc);
+    // res.json(req.params);
+});
+
+
+app.listen(4000);

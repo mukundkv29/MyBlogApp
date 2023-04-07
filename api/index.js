@@ -142,8 +142,18 @@ app.put('/post', uploadMiddleWare.single('file'), async (req, res) => {
 
 
         const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
-        res.json({isAuthor,postDoc,info});
-        
+        // res.json({isAuthor,postDoc,info});
+        if (!isAuthor) {
+            return res.status(400).json('You are not allowed to Edit this Post');
+        }
+        await postDoc.updateOne({
+            title,
+            summary,
+            content,
+            cover: newPath ? newPath : postDoc.cover,
+        });
+
+        res.json(postDoc);
     });
 
 });

@@ -27,7 +27,7 @@ dotenv.config();
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
 app.use(cookieParse());
-app.use('/uploads',express.static(__dirname+'/uploads'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 
 mongoose.connect(process.env.MONGO_URL);
@@ -88,49 +88,71 @@ app.post('/logout', (req, res) => {
 app.post('/post', uploadMiddleWare.single('file'), async (req, res) => {
 
 
-    const { originalname,path} = req.file;
+    const { originalname, path } = req.file;
     const parts = originalname.split('.');
     const ext = parts[parts.length - 1];
-    const newPath = path+'.'+ext;
-    fs.renameSync(path,newPath); 
+    const newPath = path + '.' + ext;
+    fs.renameSync(path, newPath);
 
-    const {token}=req.cookies;
-    jwt.verify(token, secret, {},async (err, info) => {
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
         if (err) throw err;
-        const {title,summary,content} = req.body;
-    
+        const { title, summary, content } = req.body;
+
         const PostDoc = await Post.create({
-            title,summary,content,
-            cover:newPath,
-            author:info.id,
+            title, summary, content,
+            cover: newPath,
+            author: info.id,
         });
         // res.json(info);
         res.json(PostDoc);
     });
-    
 
-     
+
+
 })
 
 
 
-app.get('/post' , async (req,res)=>{
+app.get('/post', async (req, res) => {
     // const posts =await Post.find();
     // res.json(posts.populate('author'));
     res.json(await Post.find()
-        .populate('author',['username'])
-        .sort({createdAt:-1})
+        .populate('author', ['username'])
+        .sort({ createdAt: -1 })
         .limit(15)
     );
 });
 
+app.put('/post', uploadMiddleWare.single('file'), async (req, res) => {
+    let newPath = null;
+    if (req.file) {
+        const { originalname, path } = req.file;
+        const parts = originalname.split('.');
+        const ext = parts[parts.length - 1];
+        newPath = path + '.' + ext;
+        fs.renameSync(path, newPath);
+    }
+
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) throw err;
+        const { id, title, summary, content } = req.body;
+        const postDoc = await Post.findById(id);
 
 
-app.get('/post/:id',async (req,res)=>{
+        const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+        res.json({isAuthor,postDoc,info});
+        
+    });
+
+});
+
+app.get('/post/:id', async (req, res) => {
     // res.json(req);->error
 
-    const {id} = req.params;
-    const PostDoc=await Post.findById(id).populate('author',['username']);
+    const { id } = req.params;
+    const PostDoc = await Post.findById(id).populate('author', ['username']);
     res.json(PostDoc);
     // res.json(req.params);
 });

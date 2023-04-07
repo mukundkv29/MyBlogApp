@@ -1,24 +1,22 @@
-*{
+* {
   box-sizing: border-box;
 }
 
-body{
+body {
   color: #222;
 }
 
-img{
+img {
   max-width: 100%;
-
 }
 
-main{
-  padding:10px;
-  max-width: 700px;
+main {
+  padding: 10px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
-
-header{
+header {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
@@ -26,44 +24,46 @@ header{
   align-items: center;
 }
 
-header a{
+header a {
   text-decoration: none;
   color: inherit;
-
 }
 
-
-header a.logo{
+header a.logo {
   font-weight: bold;
   font-size: 1.5rem;
 }
 
-header nav{
+header nav {
   display: flex;
-  gap:15px
+  gap: 15px;
 }
 
-
-div.post{
+div.post {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
   gap: 20px;
+
+  grid-template-columns: 1fr;
   margin-bottom: 30px;
 }
-
-div.post div.texts h2{
+@media screen and (min-width: 700px) {
+  div.post {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+}
+div.post div.texts h2 {
   margin: 0;
   font-size: 1.8rem;
   /* text-decoration: none; */
 }
 
-div.post div.texts a{
+div.post div.texts a {
   text-decoration: none;
   color: inherit;
 }
 
-div.post p.info{
-  margin:  6px 0;
+div.post p.info {
+  margin: 6px 0;
   color: #888;
 
   font-size: 0.7rem;
@@ -74,36 +74,32 @@ div.post p.info{
   gap: 10px;
 }
 
-div.post p.info a.author{
+div.post p.info a.author {
   color: #333;
-
-
 }
 
-
-div.post p.summary{
+div.post p.summary {
   margin: 10px 0;
   line-height: 1.4rem;
 }
 
-form.login form.register{
+form.login form.register {
   max-width: 400px;
   margin: 0 auto;
-} 
+}
 
-input{
+input {
   display: block;
   margin-bottom: 5px;
   width: 100%;
-  padding:5px 7px;
+  padding: 5px 7px;
   border-bottom: 1px solid #ccc;
-  border:2px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 5px;
   background-color: #fff;
-
 }
 
-button{
+button {
   width: 100%;
   display: block;
   background-color: #555;
@@ -112,24 +108,45 @@ button{
   border-radius: 5px;
 }
 
-form.login h1, form.register.h1{
+form.login h1,
+form.register.h1 {
   text-align: center;
 }
 
-div.post-page div.image{
+div.post-page div.image {
   display: flex;
   max-height: 200px;
   overflow: hidden;
 }
-div.post-page div.image img{
+div.post-page div.image img {
   object-position: center center;
   object-fit: cover;
+  width: 100%;
 }
-div.post-page a{
+div.post-page a {
   color: #333;
   text-decoration: underline;
 }
 
-div.post-page h1{
+div.post-page h1 {
   text-align: center;
+  margin: 10px 0 5px;
+}
+
+div.post-page time {
+  text-align: center;
+  display: block;
+  font-size: 0.7rem;
+  color: #888;
+}
+
+div.post-page div.author {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+  font-weight: bolder;
+}
+div.post-page div.content p {
+   line-height: 1.6rem;
+   
 }
